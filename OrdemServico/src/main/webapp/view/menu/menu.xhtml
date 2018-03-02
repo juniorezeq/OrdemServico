@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+xmlns:b="http://bootsfaces.net/ui"
+ xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+	<meta charset="UTF-8" />
+	<title>Projeto Web - Menu</title>
+	<link type="text/css" rel="stylesheet"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/estilo.css"
+		/>
+</h:head>
+
+<h:body style="padding: 60px;">
+
+    	<ui:composition template="/view/layout/Layout.xhtml">
+ 
+    		<ui:define name="content">
+    			<b:container>
+    <h1> Bem Vindo #{loginBean.usuario.login} </h1>
+   
+
+		</b:container>
+    		</ui:define>
+ 
+    	</ui:composition>
+
+
+	
+</h:body>
+
+</html>

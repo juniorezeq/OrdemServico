@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+	<meta charset="UTF-8" />
+	<title>Projeto Web - Menu</title>
+	<link type="text/css" rel="stylesheet"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/estilo.css" />
+</h:head>
+
+<h:body style="padding: 60px;">
+
+	<ui:composition template="/view/layout/Layout.xhtml">
+
+		<ui:define name="content">
+			<b:container>
+				<h:form id="form1">
+
+<p:dataTable id="basicDT" var="car" value="#{ordemServicoBean.osCadastrados()}">
+        <f:facet name="header">
+            Basic
+        </f:facet>
+        <p:column headerText="Id">
+            <h:outputText value="#{car.id}" />
+        </p:column>
+        <p:column headerText="Year">
+            <h:outputText value="#{car.cliente}" />
+        </p:column>
+        <p:column headerText="Brand">
+            <h:outputText value="#{car.equipament}" />
+        </p:column>
+        <p:column headerText="Color">
+            <h:outputText value="#{car.dataProposta}" />
+        </p:column>
+        <p:column style="width:32px;text-align: center">
+             <p:commandButton update="@all" oncomplete="PF('carDialog').show()" icon="ui-icon-search" title="View">
+                <f:setPropertyActionListener value="#{car}" target="#{ordemServicoBean.ordemservicoSelecionada}" />
+            </p:commandButton>
+        </p:column>
+    </p:dataTable>
+
+					<p:messages id="msg" autoUpdate="true" showDetail="true"
+						closable="true" style="60%">
+						<p:effect type="pulsate" event="load" delay="500" />
+					</p:messages>
+					
+					
+					 <p:dialog header="Car Info" widgetVar="carDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+        <p:outputPanel id="carDetail" style="text-align:center;">
+            <p:panelGrid  columns="2" rendered="#{ordemServicoBean.ordemservicoSelecionada}" columnClasses="label,value">
+             
+                <h:outputText value="Id:" />
+                <h:outputText value="#{ordemServicoBean.ordemservico.id}" />
+ 
+                <h:outputText value="Year" />
+                <h:outputText value="#{ordemServicoBean.ordemservico.cliente}" />
+ 
+               </p:panelGrid>
+        </p:outputPanel>
+    </p:dialog>
+
+				</h:form>
+
+			</b:container>
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

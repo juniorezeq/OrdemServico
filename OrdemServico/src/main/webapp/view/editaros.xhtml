@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+	<meta charset="UTF-8" />
+	<title>Projeto Web - Menu</title>
+	<link type="text/css" rel="stylesheet"
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/estilo.css" />
+</h:head>
+
+<h:body style="padding: 60px;">
+
+	<ui:composition template="/view/layout/Layout.xhtml">
+
+		<ui:define name="content">
+			<b:container>
+				<h:form id="form1">
+
+
+					<p:dataTable id="tabela1" var="os" 
+						value="#{ordemServicoBean.osCadastrados()}" editable="true" >
+						
+						<f:facet name="header">
+        				     Edição
+       					</f:facet>
+
+						<p:column headerText="Departamento">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{os.department}" />
+								</f:facet>
+								<f:facet name="input">
+									<h:selectOneMenu value="#{os.department}" style="width:100%">
+										<f:selectItems value="#{os.departamentosListados()}"
+											var="dptos" itemLabel="#{dptos}" itemValue="#{dptos}" />
+									</h:selectOneMenu>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Numero OS" sortBy="#{os.numeroos}">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{os.numeroos}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{os.numeroos}" style="width:96%"
+										label="numeroOs" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Cliente">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{os.cliente}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{os.cliente}" style="width:96%"
+										label="cliente" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Equipamento/Serviço">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{os.equipament}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{os.equipament}" style="width:96%"
+										label="numeroOs" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+<p:column headerText="Data Recebimento">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{os.dataRecebimento}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{os.dataRecebimento}" style="width:96%"
+										label="cliente">
+										 </p:inputText>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Comentário">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{os.comentario}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{os.comentario}" style="width:96%"
+										label="Comentário" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+
+						<p:column headerText="Status">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{os.status}" />
+								</f:facet>
+								<f:facet name="input">
+									<h:selectOneMenu value="#{os.status}" style="width:100%">
+										<f:selectItems value="#{os.statusListados()}" var="status"
+											itemLabel="#{status}" itemValue="#{status}" />
+									</h:selectOneMenu>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+											<p:ajax event="rowEdit" listener="#{ordemServicoBean.onRowEdit}"
+							update="@all" />
+						<p:ajax event="rowEditCancel"
+							listener="#{ordemServicoBean.onRowCancel}" update="@all" />
+
+						<p:column style="width:32px">
+							<p:rowEditor />
+						</p:column>
+					</p:dataTable>
+
+					<p:messages id="msg" autoUpdate="true" showDetail="true"
+						closable="true" style="60%">
+						<p:effect type="pulsate" event="load" delay="500" />
+					</p:messages>
+
+				</h:form>
+
+			</b:container>
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

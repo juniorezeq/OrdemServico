@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0">
+  
+
+	<persistence-unit name="postgres-local">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>br.com.klund.kpi.modelo.negocio.Usuario</class>
+		<class>br.com.klund.kpi.modelo.negocio.OrdemServico</class>
+		
+			
+		<properties>
+			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost/ordem_servico" />
+			<property name="javax.persistence.jdbc.user" value="postgres" />
+			<property name="javax.persistence.jdbc.password" value="jrz020900" />
+
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.format_sql" value="true" />
+			<property name="hibernate.default_schema" value="os" />
+			<property name="hibernate.max_fetch_depth" value="3" />
+			
+			<property name="hibernate.c3p0.min_size" value="2" />
+			<property name="hibernate.c3p0.max_size" value="25" />
+			<property name="hibernate.c3p0.timeout" value="120" />
+			<property name="hibernate.c3p0.acquire_increment" value="2" />
+			<property name="hibernate.c3p0.max_statements"  value="30" />
+			<property name="hibernate.c3p0.idle_test_period"  value="150" />
+			<property name="hibernate.c3p0.preferredTestQuery"  value="select 1" />
+			
+		</properties>
+	</persistence-unit>
+
+</persistence>
+

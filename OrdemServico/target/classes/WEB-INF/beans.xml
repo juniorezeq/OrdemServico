@@ -1,0 +1,5 @@
+<beans>
+	<interceptors>
+		<class>br.com.klund.kpi.tx.GerenciadorDeTransacao</class>
+	</interceptors>
+</beans>
