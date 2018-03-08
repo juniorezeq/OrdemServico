@@ -1,6 +1,5 @@
 package br.com.klund.kpi.modelo.negocio;
 
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
@@ -15,9 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 
 @Entity
 @Table(name = "tb_ordem_servico")
@@ -68,7 +65,7 @@ public class OrdemServico implements Serializable {
 	@Column(name = "kpiproducao")
 	private int kpiproducao;
 	@Column(name = "kpiInvoiced")
-	private int kpiInvoiced;	
+	private int kpiInvoiced;
 	@Column(name = "kpiReceveid")
 	private int kpiReceveid;
 	@Column(name = "goal")
@@ -83,33 +80,25 @@ public class OrdemServico implements Serializable {
 	private String alteradopor;
 	@ManyToOne
 	private Usuario responsavel;
-		
+	private String dataTemp;
+
 	enum departamentos {
-		Servico,
-		Locacao,
-		Projeto;
-	}
-	
-
-	 public enum status {
-		Ativo,
-		Finalizado,
-		Perdido,
-		Cancelado;
+		Servico, Locacao, Projeto;
 	}
 
-	 
+	public enum status {
+		Ativo, Finalizado, Perdido, Cancelado;
+	}
 
-public List<String> departamentosListados(){
-	List<String> dptos = Arrays.asList("Servico","Locacao","Projeto");
-	return dptos;
-}
-	 
-public List<String> statusListados(){
-	List<String> status = Arrays.asList("Ativo","Finalizado","Perdido","Cancelado");
-	return status;
-}	 
+	public List<String> departamentosListados() {
+		List<String> dptos = Arrays.asList("Servico", "Locacao", "Projeto");
+		return dptos;
+	}
 
+	public List<String> statusListados() {
+		List<String> status = Arrays.asList("Ativo", "Finalizado", "Perdido", "Cancelado");
+		return status;
+	}
 
 	public Long getId() {
 		return id;
@@ -118,7 +107,6 @@ public List<String> statusListados(){
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 
 	public status getStatus() {
 		return status;
@@ -168,7 +156,6 @@ public List<String> statusListados(){
 		this.equipament = equipament;
 	}
 
-	
 	public String getComentario() {
 		return comentario;
 	}
@@ -189,17 +176,16 @@ public List<String> statusListados(){
 		return dataRecebimento;
 	}
 
-		
-	public void setDataRecebimento(String dataRecebida) {
-		this.dataRecebimento = converteData(dataRecebida);
+	public void setDataRecebimento(LocalDate dataRecebimento) {
+		this.dataRecebimento = dataRecebimento;
 	}
 
 	public LocalDate getDataProposta() {
 		return dataProposta;
 	}
 
-	public void setDataProposta(String dataPropostaString) {
-		this.dataProposta = converteData(dataPropostaString);
+	public void setDataProposta(LocalDate dataPropostaString) {
+		this.dataProposta = (dataPropostaString);
 	}
 
 	public LocalDate getDataPo() {
@@ -334,59 +320,112 @@ public List<String> statusListados(){
 		return difference;
 	}
 
+	public String getDataTemp() {
+		return dataTemp;
+	}
+
+	public void setDataTemp(String dataTemp) {
+		this.dataTemp = dataTemp;
+	}
+
+	public void setDataPartsOrdered(LocalDate dataPartsOrdered) {
+		this.dataPartsOrdered = dataPartsOrdered;
+	}
+
+	public void setDataPartsReceveid(LocalDate dataPartsReceveid) {
+		this.dataPartsReceveid = dataPartsReceveid;
+	}
+
+	public void setServiceFinished(LocalDate serviceFinished) {
+		this.serviceFinished = serviceFinished;
+	}
+
+	public void setJobInvoiced(LocalDate jobInvoiced) {
+		this.jobInvoiced = jobInvoiced;
+	}
+
+	public void setMoneyInBank(LocalDate moneyInBank) {
+		this.moneyInBank = moneyInBank;
+	}
+
 	public void setDifference(int difference) {
 		this.difference = difference;
 	}
-	
-	public int calcularDiferenca () {
+
+	public int calcularDiferenca() {
 		difference = goal - done;
 		return difference;
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public int calcularDone() {
-	Period period = Period.between(dataPo, moneyInBank);
-	done = (period.getMonths()*30) + period.getDays();
-	return done;
+		Period period = Period.between(dataPo, moneyInBank);
+		done = (period.getMonths() * 30) + period.getDays();
+		return done;
 	}
-	
+
 	public void calcularKpis() {
-		Period kpiProp = Period.between( dataRecebimento, dataProposta);
-		kpiProposal = (kpiProp.getMonths()*30)+ kpiProp.getDays();
+	    if (checarPeriodo(dataRecebimento,dataProposta)){
+			Period kpiProp = Period.between(dataRecebimento, dataProposta);
+			kpiProposal = (kpiProp.getYears() * 365  ) + (kpiProp.getMonths() * 30) + kpiProp.getDays();
+		}
+
+		if (checarPeriodo(dataProposta,dataPo)) {
+			Period kpiFol = Period.between(dataProposta, dataPo);
+			kpiFollowUp =(kpiFol.getYears() * 365  ) + (kpiFol.getMonths() * 30) + kpiFol.getDays();
+		}
+
+		if (checarPeriodo(dataPartsOrdered,dataPo)) {
+			Period kpiOrd = Period.between(dataPo, dataPartsOrdered);
+			kpiPartsOrdered = (kpiOrd.getYears() * 365  ) +(kpiOrd.getMonths() * 30) + kpiOrd.getDays();
+		}
+
+		if (checarPeriodo(dataPartsOrdered,dataPartsReceveid)) {
+			Period kpiDeliv = Period.between(dataPartsOrdered, dataPartsReceveid);
+			kpiDeliveryTime = (kpiDeliv.getYears() * 365  ) + (kpiDeliv.getMonths() * 30) + kpiDeliv.getDays();
+		}
+
+		if (checarPeriodo(dataPartsReceveid,serviceFinished)) {
+		Period kpiProd = Period.between(dataPartsReceveid, serviceFinished);
+		kpiproducao = (kpiProd.getYears() * 365  ) +(kpiProd.getMonths() * 30) + kpiProd.getDays();
+		}
 		
-		Period kpiFol = Period.between( dataProposta, dataPo);
-		kpiFollowUp = (kpiFol.getMonths()*30)+ kpiFol.getDays();
-				
-		Period kpiOrd = Period.between( dataPo, dataPartsOrdered);
-		kpiPartsOrdered = (kpiOrd.getMonths()*30)+ kpiOrd.getDays();
-	
-		Period kpiDeliv = Period.between(dataPartsOrdered, dataPartsReceveid);
-		kpiDeliveryTime= (kpiDeliv.getMonths()*30)+ kpiDeliv.getDays();
+		if(checarPeriodo(serviceFinished,jobInvoiced)) {
+		Period kpiInv = Period.between(serviceFinished, jobInvoiced);
+		kpiInvoiced = (kpiInv.getYears() * 365  ) +(kpiInv.getMonths() * 30) + kpiInv.getDays();
+		}
+		if(checarPeriodo(jobInvoiced,moneyInBank)) {
+			Period kpiMon = Period.between(jobInvoiced, moneyInBank);
+			kpiReceveid = (kpiMon.getYears() * 365  ) + (kpiMon.getMonths() * 30) + kpiMon.getDays();
+		}
 		
-		Period kpiProd = Period.between (dataPartsReceveid, serviceFinished);
-		kpiproducao= (kpiProd.getMonths()*30)+ kpiProd.getDays();
-		
-		Period kpiInv = Period.between ( serviceFinished, jobInvoiced);
-		kpiInvoiced = (kpiInv.getMonths()*30)+ kpiInv.getDays();
-		
-		Period kpiMon = Period.between ( jobInvoiced, moneyInBank);
-		kpiReceveid = (kpiMon.getMonths()*30)+ kpiMon.getDays();	
 	}
 
 	public LocalDate converteData(String dataString) {
 		LocalDate data;
 		DateTimeFormatter formato = DateTimeFormatter.ofPattern("d/MM/yyyy");
-		data = (LocalDate.parse(dataString,formato));
+		data = (LocalDate.parse(dataString, formato));
 		return data;
 	}
-	
-	
-	@Override
-	public String toString() {
-		return  numeroos;
+
+	public boolean checarPeriodo(LocalDate data1, LocalDate data2) {
+		boolean result = false;
+		if (data1 != null && data2 != null) {
+			result = true;
+		}
+		return result;
 	}
 
-	
+	@Override
+	public String toString() {
+		return numeroos;
+	}
+
+	public void setarDataRecebimento() {
+		dataRecebimento = converteData(dataTemp);
+
+	}
+
 }

@@ -22,7 +22,7 @@
 
 
 					<p:dataTable id="tabela1" var="os" 
-						value="#{ordemServicoBean.osCadastrados()}" editable="true" >
+						value="#{ordemServicoBean.osCadastrados()}" editable="true" editMode="cell">
 						
 						<f:facet name="header">
         				     Edição
@@ -42,7 +42,7 @@
 							</p:cellEditor>
 						</p:column>
 
-						<p:column headerText="Numero OS" sortBy="#{os.numeroos}">
+						<p:column headerText="Numero OS" >
 							<p:cellEditor>
 								<f:facet name="output">
 									<h:outputText value="#{os.numeroos}" />
@@ -84,10 +84,23 @@
 									<h:outputText value="#{os.dataRecebimento}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="#{os.dataRecebimento}" style="width:96%"
+									<p:inputText value="#{os.dataTemp}" style="width:96%"
 										label="cliente">
-										 </p:inputText>
+										</p:inputText>
+											</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+<p:column headerText="Data Recebimento">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{os.dataProposta}" />
 								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{os.dataProposta}" style="width:96%"
+										label="cliente">
+										</p:inputText>
+											</f:facet>
 							</p:cellEditor>
 						</p:column>
 
@@ -118,15 +131,9 @@
 							</p:cellEditor>
 						</p:column>
 
-											<p:ajax event="rowEdit" listener="#{ordemServicoBean.onRowEdit}"
-							update="@all" />
-						<p:ajax event="rowEditCancel"
-							listener="#{ordemServicoBean.onRowCancel}" update="@all" />
+					<p:ajax event="cellEdit" listener="#{ordemServicoBean.onCellEdit}" update="@all" />
 
-						<p:column style="width:32px">
-							<p:rowEditor />
-						</p:column>
-					</p:dataTable>
+									</p:dataTable>
 
 					<p:messages id="msg" autoUpdate="true" showDetail="true"
 						closable="true" style="60%">

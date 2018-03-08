@@ -150,7 +150,7 @@ public class OrdemServicoBean implements Serializable {
 	@Transacional
 	public void setDataRecebimento(String dataRecebimentoString) {
 		this.dataRecebimento = dataRecebimentoString;
-		ordemservico.setDataRecebimento((dataRecebimentoString));
+		ordemservico.setDataRecebimento(converteData(dataRecebimentoString));
 	}
 
 	
@@ -185,7 +185,10 @@ public class OrdemServicoBean implements Serializable {
 		osCadastradas = ordemServicoDao.listarTodos();
 		for (int a = 0; a < osCadastradas.size(); a++) {
 			if ((osCadastradas.get(a).getStatus().equals(OrdemServico.status.Finalizado))) {
-				osFinalizadas.add(osCadastradas.get(a));
+				OrdemServico os = osCadastradas.get(a);
+				os.calcularKpis();
+				osFinalizadas.add(os);
+				
 			}
 		}
 		return osFinalizadas;
@@ -195,32 +198,32 @@ public class OrdemServicoBean implements Serializable {
 	
 	public void setDataProposta(String dataPropostaString) {
 		this.dataProposta = dataPropostaString;
-		ordemservico.setDataProposta(dataPropostaString);
+		ordemservico.setDataProposta(converteData(dataPropostaString));
 				}
 
-	public void setDataPO(String dataPO) {
-		this.dataPO = dataPO;
-		ordemservico.setDataPo(converteData(dataPO));
+	public void setDataPO(String stringdataPO) {
+		this.dataPO = stringdataPO;
+		ordemservico.setDataPo(converteData(stringdataPO));
 	}
 
 	public void setDataPartsOrdered(String dataPartsOrdered) {
 		this.dataPartsOrdered = dataPartsOrdered;
-		ordemservico.setDataPartsOrdered(dataPartsOrdered);
+		ordemservico.setDataPartsOrdered(converteData(dataPartsOrdered));
 	}
 
 	public void setDataPartsReceveid(String dataPartsReceveid) {
 		this.dataPartsReceveid = dataPartsReceveid;
-		ordemservico.setDataPartsReceveid(dataPartsReceveid);
+		ordemservico.setDataPartsReceveid(converteData(dataPartsReceveid));
 	}
 
 	public void setDataServiceFinish(String dataServiceFinish) {
 		this.dataServiceFinish = dataServiceFinish;
-		ordemservico.setServiceFinished(dataServiceFinish);
+		ordemservico.setServiceFinished(converteData(dataServiceFinish));
 	}
 
 	public void setDataJobInvoiced(String dataJobInvoiced) {
 		this.dataJobInvoiced = dataJobInvoiced;
-		ordemservico.setJobInvoiced(dataJobInvoiced);
+		ordemservico.setJobInvoiced(converteData(dataJobInvoiced));
 	}
 
 	public void setDataMoneyBank(String dataMoneyBank) {
@@ -300,28 +303,34 @@ public class OrdemServicoBean implements Serializable {
 	    		    mensagemErro("Erro não foi possivel atualizar");
 	    		}
 	    	}
+			
+			
 	    	public String onRowEdit(RowEditEvent event) {
 	    		FacesMessage msg = new FacesMessage("ordem de serviço atualizada com sucesso", ((OrdemServico) event.getObject()).getNumeroos());
 	            FacesContext.getCurrentInstance().addMessage(null, msg);
 	            return null;
 	        }
 	         
-	        public void onRowCancel(RowEditEvent event) {
+	        public String onRowCancel(RowEditEvent event) {
+	        	
 	            FacesMessage msg = new FacesMessage("Edit Cancelled", ((OrdemServico) event.getObject()).getId().toString());
 	            FacesContext.getCurrentInstance().addMessage(null, msg);
+	            return null;
 	        }
 	         
-	        public void onCellEdit(CellEditEvent event) {
+	        public String onCellEdit(CellEditEvent event) {
 	            Object oldValue = event.getOldValue();
 	            Object newValue = event.getNewValue();
 	             
 	            if(newValue != null && !newValue.equals(oldValue)) {
-	                FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
-	                FacesContext.getCurrentInstance().addMessage(null, msg);
+	              mensagemSucesso("Celula Editada com sucesso!");
 	            }
+	            osCadastrados();
+	            return "/view/logado.xhtml?faces-redirect=true";
 	        }
 
 	        public void onRowSelect(SelectEvent event) {
+	        	ordemservico = (OrdemServico) event.getObject();
 	            FacesMessage msg = new FacesMessage("Ordem Selecionada", ((OrdemServico) event.getObject()).getId().toString());
 	            FacesContext.getCurrentInstance().addMessage(null, msg);
 	        }

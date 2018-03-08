@@ -28,7 +28,11 @@
 								value="#{cadastroBean.usuario.login}" size="20" />
 							<p:outputLabel value="Senha:" for="cadastroSenha" />
 							<p:password id="cadastroSenha"
-								value="#{cadastroBean.usuario.senha}" size="20" feedback="true" />
+								value="#{cadastroBean.usuario.senha}" size="20" feedback="true" > 
+								<p:ajax event="keyup" update="out1" />
+								</p:password>
+								<h:outputText id="out2" value="senha digitada: " for="out1"/>
+								<h:outputText id="out1" value="#{cadastroBean.usuario.senha}" />
 						</h:panelGrid>
 						<br></br>
 						<p:commandButton value="Incluir" action="#{cadastroBean.incluir}"

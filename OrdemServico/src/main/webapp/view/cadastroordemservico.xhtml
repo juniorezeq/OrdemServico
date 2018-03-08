@@ -48,6 +48,21 @@
       					   
       					   <p:outputLabel for="dataProposta" value="Data Proposta: " />
       					   <p:inputMask id="dataProposta" value="#{ordemServicoBean.dataProposta}" mask="99/99/9999"  />
+      					   
+      					   <p:outputLabel for="dataProposta" value="Data Compra Peças: " />
+      					   <p:inputMask id="dataProposta" value="#{ordemServicoBean.dataPartsOrdered}" mask="99/99/9999"  />
+      					   
+      					   <p:outputLabel for="dataProposta" value="Data Chegada Peças: " />
+      					   <p:inputMask id="dataProposta" value="#{ordemServicoBean.dataPartsReceveid}" mask="99/99/9999"  />
+      					   
+      					   <p:outputLabel for="dataProposta" value="Data Service Finish: " />
+      					   <p:inputMask id="dataProposta" value="#{ordemServicoBean.dataServiceFinish}" mask="99/99/9999"  />
+      					   
+      					   <p:outputLabel for="dataProposta" value="Data Faturamento: " />
+      					   <p:inputMask id="dataProposta" value="#{ordemServicoBean.dataJobInvoiced}" mask="99/99/9999"  />
+      					   
+      					   <p:outputLabel for="dataProposta" value="Data Dinheiro na conta: " />
+      					   <p:inputMask id="dataProposta" value="#{ordemServicoBean.dataMoneyBank}" mask="99/99/9999"  />
 								
 								<p:outputLabel for="status" value="Status: " />
             <p:selectOneMenu id="status" value="#{ordemServicoBean.ordemservico.status}" style="width:150px">
@@ -62,10 +77,10 @@
 						</h:panelGrid>
 						<br></br>
 						<p:commandButton value="Incluir" action="#{ordemServicoBean.incluir()}"
-							process="@all" update="@all" icon="fa fa-fw fa-save" />
+							process="frmCadastro" update="@all" icon="fa fa-fw fa-save" />
 						<p:commandButton value="Voltar" icon="fa fa-fw fa-undo"
 							action="#{cadastroBean.voltar()}" style="margin-left:5px"
-							process="@form" update="@form" />
+							process="frmCadastro" update="frmCadastro" />
 						<p:commandButton id="ordensBtn" icon="fa fa-fw fa-users"
 							value="Ordens" type="button"
 							style="margin-left:5px" />

@@ -2,6 +2,8 @@ package br.com.klund.kpi.modelo.negocio;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -11,6 +13,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -31,6 +36,7 @@ public class Usuario implements Serializable {
 	@Column(name = "senha", length = 50, nullable = false)
 	private String senha;
 	private LocalDateTime dataDoUltimoAcesso;
+	
 
 	public Long getId() {
 		return id;
@@ -107,5 +113,6 @@ public class Usuario implements Serializable {
 		String senha = uuid.toString().substring(0, 5);
 		this.setSenha(senha);
 	}
+
 
 }
